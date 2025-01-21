@@ -9,6 +9,8 @@
 #include <errno.h>
 #include <birchutils.h>
 
+#define ErrMem      0x01
+
 typedef unsigned char int8;
 typedef unsigned short int int16;
 typedef unsigned int int32;
@@ -59,7 +61,7 @@ struct s_registers {
     Reg sp;
     Reg ip;
 };
-typdef struct s_registers Registers;
+typedef struct s_registers Registers;
 
 // CPU
 struct s_cpu {
@@ -75,6 +77,11 @@ typedef struct s_cpu CPU;
              // 0000 0000
              // 0000 0101 = 0x05
 */
+enum e_opcode {
+    mov = 0x01,
+    nop = 0x02
+};
+typedef enum e_opcode Opcode;
 
 struct s_instrmap {
     Opcode o;
@@ -82,11 +89,7 @@ struct s_instrmap {
 };
 typedef struct s_instrmap IM;
 
-enum e_opcode {
-    mov = 0x01,
-    nop = 0x02
-};
-typedef enum e_opcode Opcode;
+typedef int8 Args;
 
 struct s_instruction {
     Opcode o;
@@ -95,9 +98,9 @@ struct s_instruction {
 typedef struct s_instruction Instruction;
 
 // Stack
-typedef int8 Stack[-1];
+typedef int8 Stack[((unsigned int)(-1))];
 // Sequence of Instructions
-typdef Instruction Program;
+typedef Instruction Program;
 
 // Virtual Machine
 struct s_vm {
@@ -105,14 +108,17 @@ struct s_vm {
     Stack s;
     Program *p;
 };
-
 typedef struct s_vm VM;
 
-// Outlines all the current instructions
-static IM *instrmap = {
-    { Opcode.mov, 0x03 },
-    { Opcode.nop, 0x01 }
-}
+static Opcode opc;
 
+// Outlines all the current instructions
+static IM instrmap[] = {
+    { mov, 0x03 },
+    { nop, 0x01 }
+};
+
+// Constructor function, returns pointer to VM
+VM *virtualmachine(void);
 
 int main(int,char**);
