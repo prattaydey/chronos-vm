@@ -10,6 +10,7 @@
 #include <birchutils.h>
 
 #define ErrMem      0x01
+#define NoArgs      { 0x00, 0x00}
 
 typedef unsigned char int8;
 typedef unsigned short int int16;
@@ -118,7 +119,8 @@ static IM instrmap[] = {
     { nop, 0x01 }
 };
 
+    Program *exampleprogram(void); // to be removed/modified later
 // Constructor function, returns pointer to VM
-VM *virtualmachine(void);
+VM *virtualmachine(Program*, int16);
 
 int main(int,char**);
