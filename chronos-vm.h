@@ -86,7 +86,7 @@ typedef enum e_opcode Opcode;
 
 struct s_instrmap {
     Opcode o;
-    int8 size;
+    int8 s;
 };
 typedef struct s_instrmap IM;
 
@@ -96,7 +96,7 @@ struct s_instruction {
     Opcode o;
     Args a[]; // can be 0-2 bytes
 };
-typedef struct s_instruction Instruction;
+typedef struct s_instruction *Instruction;
 
 // Stack
 typedef int8 Stack[((unsigned int)(-1))];
@@ -118,9 +118,12 @@ static IM instrmap[] = {
     { mov, 0x03 },
     { nop, 0x01 }
 };
+#define IMs (sizeof(instrmap) / sizeof(struct s_instrmap))
 
-    Program *exampleprogram(void); // to be removed/modified later
+    Program exampleprogram(void); // to be removed/modified later
+
+int8 map(Opcode);
 // Constructor function, returns pointer to VM
-VM *virtualmachine(Program*, int16);
+VM *virtualmachine(Program, int16);
 
 int main(int,char**);
