@@ -7,7 +7,7 @@ int8 map(Opcode o){
 
     ret = 0;
     for (n = IMs, p=instrmap; n; n--, p++){
-        (if p -> o == o ){
+        if (p -> o == o){
             ret = p -> s;
             break;
         }
@@ -57,18 +57,23 @@ Program exampleprogram() {
         return (Program)0; 
     }
 
-    Program prog = { i1, i2 };
+    // Program prog = { i1, i2 };
+    Program *prog = malloc(sizeof(Instruction) * 2);
+    prog[0] = i1;
+    prog[1] = i2;
     return prog;
 }
 
 int main(int argc, char *argv[]) {
+    int8 size;
     Program prog;
     VM *vm;
+    size = (map(mov) + map(nop));
     prog = exampleprogram();
-    print("prog = %p\n", prog);
+    printf("prog = %p\n", prog);
 
-    vm = virtualmachine(prog);
-    print("vm = %p\n", vm);
+    vm = virtualmachine(prog, size);
+    printf("vm = %p\n", vm);
 
     return 0;
 }
